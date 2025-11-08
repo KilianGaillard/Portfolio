@@ -1,0 +1,3 @@
+/home/kilian/Bureau/L3/TP Théorie/automate/CMakeFiles/testfa.dir
+/home/kilian/Bureau/L3/TP Théorie/automate/CMakeFiles/edit_cache.dir
+/home/kilian/Bureau/L3/TP Théorie/automate/CMakeFiles/rebuild_cache.dir
