@@ -1,3 +1,3 @@
 # MicroMachine
 
-Le projet pourai être continuer à l'avenire 
+The game seems to work but the car isn't visible
