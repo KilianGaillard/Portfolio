@@ -1,0 +1,210 @@
+\documentclass[10pt,openright]{article}
+\usepackage[a4paper,top=25mm,bottom=25mm,left=30mm,right=20mm,bindingoffset=6mm]{geometry}
+\usepackage[T1]{fontenc} 
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[parfill]{parskip}
+\usepackage{eurosym,indentfirst,lettrine,shorttoc,soul}
+\usepackage{titlesec, blindtext, color}
+\usepackage[colorlinks=true,linkcolor=black]{hyperref}
+\usepackage{caption}
+\usepackage{tocvsec2}
+
+
+
+
+
+\titlespacing*{\section}{0pt}{*4}{*1}
+\titlespacing*{\subsection}{0pt}{*3}{*0}
+\titlespacing*{\subsubsection}{0pt}{*4}{*1}
+\setlength{\parindent}{0.5cm}
+
+
+
+
+\begin{document}
+\begingroup
+\LARGE{Contexte, introduction}\\
+\endgroup
+\vspace{15pt}
+
+J'ai réalisé mon stage à l'occasion d'un stage d'immersion en entreprise, à la fin de la 1ère année d'étude de la License CMI Informatique.\\
+Ce stage m'a permis de faire un premier pas dans le monde du travail, et plus précisément dans une structure utilisant l'informatique, afin que j'en apprenne davantage, que je me diversifie, et que j'approfondisse mes connaissances. Ce stage a été réalisé au Centre Hospitalier Universitaire de Besançon, du 15 juillet au 16 août 2024.\\
+
+Au cours de ces cinq semaines de stage, j'ai découvert le monde de l'entreprise, et plus précisément l'organisation d'un grand réseau informatique, desservant tout un Centre Hospitalier Universitaire, le plus grand du département.  Le CHU de Besançon a pour mission de donner accès à des soins de qualité, et pour tous. Il compte aujourd'hui plus de 7300 membres de personnels et se trouve donc être le plus gros employeur de Besançon. Il a également une capacité d'accueil de 1300 lits.
+
+J'ai pu intégré la Direction des Services Numériques du CHU de Besançon. La Direction des Services Numériques a donc un rôle majeur dans cette institution : celui de mettre en place et de maintenir à tout instant un réseau informatique, permettant par exemple l'échange d'informations, la sauvegarde de données, à travers tout le CHU. En effet, nous vivons dans une ère de plus en plus digitalisée, et aujourd'hui tout passe par le numérique. Le réseau informatique aide grandement le CHU quant à sa tâche de soins et d'assistance à la personne, en permettant de dématérialiser et de retrouver à tout instant des dossiers de patients, de transférer rapidement des résultats d'examens d'un service à un autre, encore bien d'autres que nous verrons.\\ 
+Mais également, j'ai été en immersion dans une équipe d'une quinzaine de personnes, au sein de la Direction des Services Numériques, dans un de ses départements, celui des Infrastructures.  J'ai également pu prendre part à ce maintien du réseau informatique, et à son développement, à travers différentes tâches qui m'ont été attribuées au cours de ce stage. Tout cela m'a permis de découvrir la constitution, et le fonctionnement d'un réseau informatique de grande échelle, \oe uvrant pour la santé du peuple de la région.\\
+
+
+
+Dans un premier temps,  j'introduirai tout d'abord le CHU de Besançon, son histoire, sa structure, ses fonctions, ses nombreux services. Ensuite, nous nous pencherons plus précisément sur l'organisation de la Direction des Services Numériques, son rôle dans l'institution, ainsi que les différents rôles des agents dans cette Direction. Suite à cela, nous nous intéresserons plus particulièrement à la cellule Réseau, celle qui m'a accueillie pour mon stage, et où j'y ai effectué de nombreux projets. Enfin nous apposerons une conclusion, qui nous permettra d'éclaircir et de préciser les réels objectifs et enjeux de ces missions, mais également de ce stage.\\
+
+Le CHU de Besançon est, comme son nom l'indique, un Centre Hospitalier Universitaire. Fondé fin des années 70, il est constitué d'un site principal, inauguré en 1982, l'Hôpital Jean Minjoz, mais est également constitué de son ancien site encore partiellement actif : l'Hôpital Saint-Jacques, en plein centre-ville. Le CHU de Besançon a pour mission de donner accès à des soins de qualité, et pour tous. Il compte aujourd'hui plus de 7300 membres de personnels et se trouve donc être le plus gros employeur de Besançon. Il a également une capacité d'accueil de 1300 lits.\\
+
+
+Le site Jean Minjoz, le plus important et amené à demeurer le seul, se compose de plusieurs bâtiments :\\
+
+\begin{itemize}
+    \item Le bâtiment Jean Minjoz : tout premier bâtiment édifié fin des années 70, composé de quatre ailes de 9 étages, d'un rez-de-chausée, et de 3 sous-sols. Ce Bâtiment abrite de très nombreux services de soins au rez-de-chaussée et dans les étages . Il abrite également dans les sous-sols l'ensemble des ateliers de réparation du matériel, la pharmacie de l'hôpital ainsi que le service de restauration.
+\vspace{5pt}
+    \item Le Pôle C\oe ur-Poumon :  construit en 1998, qui comme son nom l'indique contient tous les services concernant les soins et interventions sur le c\oe ur et les poumons, tels que la cardiologie, la pneumologie, ou encore l'endocrinologie.
+\vspace{5pt}
+    \item Les Directions :  construit en 2021, abrite toutes les directions du CHU, réparties sur 4 niveaux, avec deux Directions à chaque étage. 
+\vspace{5pt}
+    \item La Maison des Enfants et des Mères en Consultation : le bâtiment "MEMC", édifié en 2012, contient de très nombreux servives de santé tels que la gynécologie, la cancérologie, la pédiatrie et de nombreux autres services en rapport avec la natalité.
+    \vspace{5pt}
+    \item Le PC-BIO : construit en 2016, renferme tous les laboratoires d'analyses, de recherches par exemple en cancérologie ou en biologie médicale, et les centres de radiographies.
+
+\vspace{5pt}
+    \item Le centre d'imagerie, construit en 2005, contient les centres où sont faits les scanners en tous genres, tels que les IRM.
+\vspace{5pt}
+    \item La Maison des Familles : construite au tout début des années 2000, est une maison où les familles des patients sont accueillies et logées par le CHU.
+\vspace{5pt}
+    \item Le CESD : le Centre d'Enseignement et de Soins Dentaires, tout nouveau bâtiment encore en pleine construction, et est un centre dentaire et d'enseignement.
+
+    \vspace{5pt}
+    \end{itemize}
+    Rien que pour le site de Jean Minjoz, on parle d'une taille de plus de 180 000 mètres carrées.
+    Ensuite le CHU est également composé du site Saint-Jacques, qui abrite encore les services de psychiatrie, d'études du sommeil et les unités de médecine légale. D'autres sites externes sont également rattachés au réseau du CHU, tels que la prison, la blanchisserie, la crèche, l'IFSI (L'Institut de Fromation en Soins Infirmiers), le site de Chemaudans où se trouvent les archives, l'UPC : cuisines du CHU.\\
+
+    
+\end{itemize}
+
+
+
+
+ La Direction des Services Numériques est organisé en  Départements qui sont le Département Infrastructures, le Centre de Services, puis l'Applications.\\
+ 
+ Le Département Applications est chargé de mettre au point des applications, des logiciels, et de les tenir à jour, afin de permettre au personnel du CHU de pouvoir travailler.\\
+
+Le Département Centre d'appels reçoit des appels de personnes qui ont besoin d'aide et est chargé de les assister : que ce soit des blessés dans le cas d'appels passés au Centre 15, ou de personnes rencontrant un problème avec le réseau informatique dans le cas de l'Assistance Centralisée. 
+
+Le Département Infrastructures est celui au c\oe ur duquel le stage a été réalisé. Ce département est chargé de faire fonctionner tout le réseau d'équipements du CHU. Il est découpé en 5 cellules ou domaines : 
+\vspace{5pt}
+\begin{itemize}
+    \item Sécurité
+    \item Bases de Données 
+    \item Exploitation/Poste de Travail 
+    \item Réseau
+    \item Maintenance Serveurs/Stockage
+\end{itemize}
+\vspace{30pt}
+
+\begingroup
+\LARGE{Développement}\\
+\endgroup
+
+
+\vspace{5pt}
+
+
+\begingroup
+ \large{Présentation des différentes cellules :}\\
+\endgroup
+\vspace{10pt}
+
+
+ La Cellule Sécurité a pour rôle de sécuriser le réseau du CHU, les informations qui y circulent, les équipements, de toute intervention extérieure inconnue et/ou non-autorisée, ou de proscrire tout comportement inadéquat au sein même de la structure.
+Cette cellule est composée de 3 personnes, qui \oe uvrent en ce sens.\\
+
+\vspace{10pt}
+La Cellule Bases de Données doit organiser, dans une structure de données, les données crées et sauvegardées par le CHU au cours de son activité. Ces structures de données sont donc des bases de données, qui permettent aux informations de circuler plus rapidement afin de faciliter leur accès à ceux qui en ont besoin.\\
+
+
+
+La Cellule Maintenance Serveurs/Stockage est elle chargée de mettre en place et de maintenir les serveurs et baies de stockage du CHU.\\
+
+
+
+Le rôle de la cellule Exploitation/Poste de Travail est de s'accorder avec le département Applications, qui s'occupe de développer des logiciels utiles au personnel du CHU, et de développer des mises à jour. La cellule fait installer les logiciels et mises à jour envoyés par l'équipe de développement aux utilisateurs ou machines visées.\\
+
+La cellule Réseau a pour rôle majeur d'intervenir sur la partie physique de la chaîne du transfert de données. Sa mission première est d'installer, de mettre en relation divers équipements réseau à travers le CHU. La cellule doit également beaucoup intervenir sur celui-ci, même après installation, pour des travaux de maintenance, de réparation, ou encore de rénovation d'équipements. Cette cellule a également pour mission de suivre les tendances et avancées en matières de nouvelles technologies, et donc de mettre en place une évolution du parc informatique du CHU. Enfin, l'optimisation de ce réseau fait également partie intégrante des problématiques des membres de la cellule Réseau.\\
+
+\vspace{10pt}
+\begingroup
+\large{Présentation des différents projets : }\\
+\endgroup
+
+
+
+
+
+
+
+
+
+Remplacement des switchs\\
+
+Un des projets auquel j'ai pu prendre part est le remplacement d'équipements informatique au sein du réseau du CHU : les switchs. Ceux-ci étaient anciennement d'Alcatel et sont remplacés par des switchs Extreme.
+ Ceux-ci sont plus puissants, moins bruyants et offrent deux fois plus de ports. Ils offrent également la possibilité d'avoir accès au NAC, nouvelle fonctionnalité de sécurité, et de gestion d'accès aux VLAN du CHU, ce qui était impossible avant.\\
+
+Le remplacement de switchs est une opération de grande envergure, avec 1080 switchs de 24 ports à changer.Celui-ci n'est pas fini, et en réalité, ne fait que débuter, on estime que 15 \% des switchs du réseau ont été remplaçés, ce qui représente 228 switchs Extreme, et encore 852 switchs Alcatel qu'il reste à remplacer.
+
+Installation des sondes\\
+
+ La Cellule Réseau a mis en place, et nous y avons contribué, à l'installation de sondes de températures dans la plupart des locaux, abritant des équipement réseaux, tels que des switchs, des serveurs, des baies de disques. Nous avons installé une quinzaine de sondes à travers le bâtiment Jean Minjoz et (MEMC) du CHU. Ces suivis de températures sont consultables depuis une page wikipédia privée, accessible uniquement par les membres de la Direction des Services Numériques.\\
+
+Ces sondes sont reliées au réseau informatique du CHU, par un VLAN qui leur est spécifique et commun à toutes, et sont capables d'envoyer des alertes par mails, en cas de trop forte, ou trop faible température. L'installation d'une de ces sondes est plutôt simple, et prend peu de temps, de l'ordre de 10 minutes, juste le temps de sortir la sonde, de la fixer à la baie d'un local, de la brancher à un switch, de brancher son cable de sonde, puis de noter le port, le numéro du switch, et le numéro de la pile sur laquelle elle figure. Une fois installée, elle doit être installée sur le bon VLAN, ce qui a été fait par mon maître de stage. La sonde est ensuite reliée au réseau, fonctionelle, elle renvoie bien la température de son environnement.\\
+
+Le tableau qui a été rempli pour référencer les informations de ces sondes, est formé ainsi :  le nom des sondes : une lettre, le nom du bâtiment (ici J pour JMZ), ensuite une deuxième lettre pour l'aile correspondant (A :Nord, B : Ouest, C : Sud, D : Est), puis un numéro : celui du niveau où se trouve la sonde. Puis, la seconde colonne référence les adresses IP de la sonde, la troisième colonne, le nom du port où la sonde est branchée. Enfin, la quatrième colonne référence l'adresse URL à laquelle les informations sur la sonde sont consultables, puis la dernière colonne, l'état de fonctionnement de celle-ci.\\
+
+Ce tableau est identique d'un point de vue de la forme, à celui utilisé par le CHU, mais ses informations sont ici factices, car celles du CHU sont sensibles : on ne voudrait pas que des adresses IP ou autres informations sensibles soient communiquées à des individus malveillants.\\
+L'adresse URL amène à une page web, spécifique pour chaque sonde, et permet de visualiser ses informations.\\
+
+Mise en place de switchs au sein de l'IFPS.\\
+
+C'est ici qu'a été effectué notre installation de switchs, dans 7 locaux différents, disposant chacun d'une baie, avec entre 2 et 4 switchs chacun, d'une arrivée de fibre, et de ports reliés à des câbles, distribuant le flux à travers l'IFPS, et ces 5 niveaux. En tout, c'est 21 switchs qui ont été installés. Installer un switch peut facilement prendre 5 minutes, le temps de le fixer à la baie, et de relier et mettre en marche ses alimentations (qui sont 2, toujours pour éviter la panne totale d'un équipement). Ce travail a été réalisé sur une seule journée, avec nos deux collègues de la cellule Réseau, et d'un technicien de l'entreprise SPIE, mandatée par le CHU pour intervenir sur les installations techniques de tout ce qui touche au réseau et à l'électrique.\\
+
+
+
+L'Hôpital St-Jacques est le site qui précédait l'Hôpital J.Minjoz, et qui aujourd'hui, est en plein transfert de ses services vers ce dernier. Certains de ses bâtiments sont donc démolis petit à petit, pour à terme complètement délocaliser tous ses services de santé vers Minjoz. Sur place, il ne restera que les bâtiments en meilleur état, afin de les réhabiliter. A ce jour demeure encore les services de médecine légale, d'exploration du sommeil, et de psychiatrie. Ceux-ci ont donc besoin d'être relié au réseau du CHU. Ce site, étant vieux de plus de 30 ans, les équipements malgré tout robustes, et à la pointe de la technologie à l'époque ne sont aujourd'hui plus que des équipements obsolètes. Certains switchs étaient particulièrement en mauvais état, et suspectés par la cellule réseau de pouvoir disfonctionner, voir arrêter complètement de fonctionner dans les prochaines semaines à venir. Il était donc nécessaire d'intervenir, afin de les remplacer, par des nouveaux switchs, qui eux-mêmes étaient anciennement utilisés sur le site de Minjoz, mais remplacés par les nouveaux de la marque Extreme. En effet, il n'était pas pertinent d'installer des nouveaux switchs Extreme, flambants-neufs, sur un site voué à être démantelé dans les prochains mois. Ces équipements, alors encore en parfait état de fonctionnement, sont bien assez suffisants pour remplir leur tâche. C'est un total de 3 switchs qui ont été remplaçé, en l'espace d'une après-midi.\\
+
+
+Interventions diverses de maintenance.\\
+
+
+La plupart du temps, quand une opération d'installation à titre exceptionel n'était pas à effectuer, notre tâche était de suivre nos collègues de la cellule Réseau dans leurs interventions de maintenances du réseau informatique à travers le CHU. Au sein du CHU de Besançon, des appels sont passés par le personnel du  CHU, auprès de l'Assistance Centralisée, lorsqu'un problème survient avec les équipements informatiques du CHU. L'AC prend l'appel, et se charge de faire un "ticket", un formulaire décrivant une demande ou un incident particulier, qui est ensuite transféré au service concerné, afin d'être traîté dans les plus brefs délais. Ce service de demandes d'assistance et d'interventions par tickets est assuré par le logiciel GLPI, auquel tout le personnel du CHU a accès. \\
+
+
+Au cours de ce stage, nous avons été amené à pratiquer des interventions de maintenance sur le réseau du CHU, tels que des redémarrages d'alimentation de switchs en plein disfonctionnement, des changements de ports sur lesquels certains équipements étaient connectés, et qui ne recevait plus de flux, par exemple lorsque le câble qui liait ce port à son switch, a été coupé, ou s'est détérioré. Des opérations de modification d'adresse IP, et de VLAN à attribuer étaient aussi une des tâches que nous avons réalisées, notamment dans un contexte de déplacement d'un service dans une autre partie du bâtiment. En effet, puisque les équipemnts de celui-ci étaient connectés à un switch Alcatel-Lucent, le NAC n'étant pas disponible, les accès aux VLAN et l'adresse IP étaient attribués au port en question, et non à l'équipement, puisque ce n'est pas possible sans le NAC. Les équipements, après avoir été déplacés, ne fonctionnaient donc plus, car se sont retrouvés sur un port qui ne correspond pas à la fonction pour laquelle ils sont employés. Par exemple, un port prévu et paramétré pour l'utilisation d'une imprimante ne peut faire fonctionner un ordinateur. Il  a donc fallu intervenir sur place, prendre connaissance des ports mis en cause et les re-paramétrer pour à nouveau garantir le bon fonctionnement des équipements.\\
+ 
+\vspace{15pt}
+\begingroup
+\LARGE{Conclusion}
+\endgroup
+
+\vspace{15pt}
+Au cours de ce stage, j'ai été amené à suivre et découvrir des notions de base sur le fonctionnement du réseau informatique du CHU de Besançon, à travers des échanges avec mes collègues du service informatique. J'ai pû en apprendre sur l'infrastructure informatique, par quels moyens et équipements les informations circulent, comment mettre en relation ces équipements et comment les sécuriser. J'ai également découvert leurs bases de données, moyens indispensables d'organiser et de faciliter la recherche de données, celles-ci renferment plusieurs milliards d'enregistrements. Mais malgré la grande quantité d'informations que j'ai pu assimiler, l'importance de celles-ci pour comprendre le réseau, et leur pertinence pour ma poursuite d'études, cette partie du stage était la moins intéractive. En cela, les interventions quotidiennes, de dépannage, de réparation, et de remplacement d'équipements m'ont permis de me familiariser avec la manipulation d'équipements. Ces interventions m'ont permis de participer à des projets internes à l'institution.\\
+
+
+J'ai par exemple contribué à la surveillance du bon état des locaux qui abritent les équipements chargés de distribuer le flux à travers le CHU (tels que des switchs) en installant des sondes dans un total de quinze locaux, répartis pour la plupart dans le bâtiment JMZ, et pour quelques-uns dans le bâtiment MEMC.
+Les sondes ont pour rôles de surveiller la température, et pour certaines d'entre elles le taux d'humidité, qui sont des facteurs qui peuvent mener à une dégradation et à des disfonctionnements d'équipements si ceux-ci ne sont pas dans les valeurs référencées comme étant sans danger pour le matériel. Les sondes que j'ai installées, puis référencées sur le wiki privé du CHU, sont bien toutes accessibles de celui-ci, et leurs informations, relatives à la température, et pour certaines d'entre-elles au taux d'humidité de leur environnement, sont bien consultables.\\
+
+J'ai également pu participer à l'installation de nouveaux switchs dans le tout nouveau bâtiment de formtion des professionels de santé construit par le CHU et l'Université. J'ai pu y installer un total de 21 switchs, en compagnie de mon maître de stage Nicolas DURRAFOURG, et de son collègue Bernard JACQUOT. Ces switchs ont ensuite été branchés et reliés par des liens fibres par  Bernard JACQUOT, et la tâche a donc été réalisée avec succès.\\
+
+Au cours de ce stage, j'ai donc découvert le monde de l'entreprise, notamment lié à celui de l'informatique. Il m'a permis de diversifier mes conaissances de celles acquises au cours de cette première année d'études : j'ai pu côtoyer un environnement évoluant avec une grande infrastructure.
+De plus, au-delà des conaissances de qualité, et d'un réel intérêt pour moi, j'ai appris à réellement travailler avec une équipe, de rendre compte de mes travaux réalisés afin de m'accorder avec les leurs.
+Le cadre de travail, châleureux, bienveillant, et impliqué dans mon apprentissage, m'ont permis de passer un stage des plus agréables, bien plus que je ne l'espérais.
+
+Au final, ce stage m'a conforté dans l'idée de poursuivre mes études dans l'informatique, d'en découvrir plus, m'a fait levé des à-prioris quant à certains points, notamment sur celui de l'activité professionelle, et des tâches réalisées par une équipe de cybersécurité, étant la branche dans laquelle j'aspire à travailler. Je pensais que travailler dans la cybersécurité consistait à sagement attendre d'être exposé à une attaque, puis d'y répondre par des commandes en tous genres, afin de contrecarrer les tentatives d'intrusions.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
