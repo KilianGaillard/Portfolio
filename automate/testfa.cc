@@ -56,6 +56,11 @@ TEST(AutomatonTestAddSymbol, AutomatonWithASymbolThatRepetes) {
   EXPECT_FALSE(fa.addSymbol('A'));
 }
 
+TEST(AutomatonTestAddSymbol, AutomatonWithASymbolThatIsABlank) {
+  fa::Automaton fa;
+  EXPECT_FALSE(fa.addSymbol(' '));
+}
+
 TEST(AutomatonTestAddSymbol, AutomatonWithEpsilon) {
   fa::Automaton fa;
   EXPECT_FALSE(fa.addSymbol(fa::Epsilon));
@@ -1260,8 +1265,175 @@ TEST(AutomatonTestRemoveNonCoAccessibleStates, AutomatonWithNonCoAccessibleState
 }
 
 
+////////////////////////////////////// tests pour createIntersection /////////////////////////////////////////////////
+
+//langage des mots qui commencent par un a et finissent par un b
+TEST(AutomatonTestCreateIntersection, AutomatonsOfTheCM) {
+  fa::Automaton fa1;
+  fa::Automaton fa2;
+  fa1.addState(0);
+  fa1.addState(1);
+  fa2.addState(0);
+  fa2.addState(1);
+  fa1.setStateInitial(0);
+  fa1.setStateFinal(1);
+  fa2.setStateInitial(0);
+  fa2.setStateFinal(1);
+  fa1.addSymbol('a');
+  fa1.addSymbol('b');
+  fa2.addSymbol('a');
+  fa2.addSymbol('b');
+  fa1.addTransition(0,'a',1);
+  fa1.addTransition(1,'a',1);
+  fa1.addTransition(1,'b',1);
+  fa2.addTransition(0,'b',1);
+  fa2.addTransition(1,'b',1);
+  fa2.addTransition(0,'a',0);
+  fa2.addTransition(1,'a',0);
+  fa::Automaton fa = fa::Automaton::createIntersection(fa1,fa2);
+  std::string word1 = "ab";
+  std::string word2 = "abbbbbbb";
+  std::string word3 = "b";
+  std::string word4 = "a";
+  EXPECT_TRUE(fa.match(word1));
+  EXPECT_TRUE(fa.match(word2));
+  EXPECT_FALSE(fa.match(word3));
+  EXPECT_FALSE(fa.match(word4));
 
 
+}
+
+TEST(AutomatonTestCreateIntersection, AutomatonsThatAreExactlyTheSame) {
+  fa::Automaton fa1;
+  fa::Automaton fa2;
+  fa1.addState(0);
+  fa1.addState(1);
+  fa2.addState(0);
+  fa2.addState(1);
+  fa1.setStateInitial(0);
+  fa1.setStateFinal(1);
+  fa2.setStateInitial(0);
+  fa2.setStateFinal(1);
+  fa1.addSymbol('a');
+  fa1.addSymbol('b');
+  fa2.addSymbol('a');
+  fa2.addSymbol('b');
+  fa1.addTransition(0,'a',1);
+  fa1.addTransition(1,'a',1);
+  fa1.addTransition(1,'b',1);
+  fa2.addTransition(0,'a',1);
+  fa2.addTransition(1,'a',1);
+  fa2.addTransition(1,'b',1);
+  fa::Automaton fa = fa::Automaton::createIntersection(fa1,fa2);
+  std::string word1 = "ab";
+  std::string word2 = "abbbbbbb";
+  std::string word3 = "b";
+  std::string word4 = "a";
+  EXPECT_TRUE(fa1.match(word1));
+  EXPECT_TRUE(fa1.match(word2));
+  EXPECT_FALSE(fa1.match(word3));
+  EXPECT_TRUE(fa1.match(word4));
+  EXPECT_TRUE(fa2.match(word1));
+  EXPECT_TRUE(fa2.match(word2));
+  EXPECT_FALSE(fa2.match(word3));
+  EXPECT_TRUE(fa2.match(word4));
+  EXPECT_TRUE(fa.match(word1));
+  EXPECT_TRUE(fa.match(word2));
+  EXPECT_FALSE(fa.match(word3));
+  EXPECT_TRUE(fa.match(word4));
+ 
+
+
+
+
+}
+
+
+////////////////////////////////////// tests pour hasEmptyIntersectionWith /////////////////////////////////////////////////
+
+TEST(AutomatonTestHasEmptyIntersectionWith, AutomatonsThatHaveCompletelyDifferentAlphabet) {
+  fa::Automaton fa1;
+  fa::Automaton fa2;
+  fa1.addState(0);
+  fa1.addState(1);
+  fa2.addState(0);
+  fa2.addState(1);
+  fa1.setStateInitial(0);
+  fa1.setStateFinal(1);
+  fa2.setStateInitial(0);
+  fa2.setStateFinal(1);
+  fa1.addSymbol('a');
+  fa1.addSymbol('b');
+  fa2.addSymbol('c');
+  fa2.addSymbol('d');
+  fa1.addTransition(0,'a',1);
+  fa1.addTransition(1,'a',1);
+  fa1.addTransition(1,'b',1);
+  fa2.addTransition(0,'b',1);
+  fa2.addTransition(1,'b',1);
+  fa2.addTransition(0,'a',0);
+  fa2.addTransition(1,'a',0);
+  EXPECT_TRUE(fa1.hasEmptyIntersectionWith(fa2));
+
+
+
+}
+
+TEST(AutomatonTestHasEmptyIntersectionWith, AutomatonsThatHaveTheSameAlphabet) {
+  fa::Automaton fa1;
+  fa::Automaton fa2;
+  fa1.addState(0);
+  fa1.addState(1);
+  fa2.addState(0);
+  fa2.addState(1);
+  fa1.setStateInitial(0);
+  fa1.setStateFinal(1);
+  fa2.setStateInitial(0);
+  fa2.setStateFinal(1);
+  fa1.addSymbol('a');
+  fa1.addSymbol('b');
+  fa2.addSymbol('a');
+  fa2.addSymbol('b');
+  fa1.addTransition(0,'a',1);
+  fa1.addTransition(1,'a',1);
+  fa1.addTransition(1,'b',1);
+  fa2.addTransition(0,'b',1);
+  fa2.addTransition(1,'b',1);
+  fa2.addTransition(0,'a',0);
+  fa2.addTransition(1,'a',0);
+  EXPECT_FALSE(fa1.hasEmptyIntersectionWith(fa2));
+
+
+
+}
+
+TEST(AutomatonTestHasEmptyIntersectionWith, AutomatonsThatAreExactlyTheSame) {
+  fa::Automaton fa1;
+  fa::Automaton fa2;
+  fa1.addState(0);
+  fa1.addState(1);
+  fa2.addState(0);
+  fa2.addState(1);
+  fa1.setStateInitial(0);
+  fa1.setStateFinal(1);
+  fa2.setStateInitial(0);
+  fa2.setStateFinal(1);
+  fa1.addSymbol('a');
+  fa1.addSymbol('b');
+  fa2.addSymbol('a');
+  fa2.addSymbol('b');
+  fa1.addTransition(0,'a',1);
+  fa1.addTransition(1,'a',1);
+  fa1.addTransition(1,'b',1);
+  fa2.addTransition(0,'a',1);
+  fa2.addTransition(1,'a',1);
+  fa2.addTransition(1,'b',1);
+ 
+  EXPECT_FALSE(fa1.hasEmptyIntersectionWith(fa2));
+
+
+
+}
 
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);

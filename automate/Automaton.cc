@@ -372,7 +372,7 @@ namespace fa {
         new_automaton.addTransition(it->from,it->alpha,it->to);
       }
       // if(!new_automaton.isDeterministic()) {
-      //   new_automaton = fa::Automaton::createDeterministic(new_automaton);
+      //   new_automaton = createDeterministic(new_automaton);
       // }
       if(!new_automaton.isComplete()) {
         new_automaton = fa::Automaton::createComplete(new_automaton);
@@ -539,61 +539,86 @@ namespace fa {
 
   Automaton Automaton::createIntersection(const Automaton& lhs, const Automaton& rhs) {
 
-    std::map<int,std::pair<int,int>> t_correspondance;
-    int count = 0;
-    for(auto it = lhs.SetState.states.begin(); it!= lhs.SetState.states.end();it++) {
-      for(auto it2 = rhs.SetState.states.begin(); it2!= rhs.SetState.states.end();it2++) {
-        std::pair<int,int> tmp_insert = {it->first,it2->first};
-        t_correspondance.insert({count,tmp_insert});
-        count++;
-      }
-    }
-
+    fa::Automaton copy_lhs = lhs;
+    fa::Automaton copy_rhs = rhs;
     fa::Automaton new_automaton;
-    for(auto it = t_correspondance.begin(); it!= t_correspondance.end();it++) {
-      new_automaton.addState(it->first); // création des états
-      // initialisation de la classe des états
-      if((rhs.isStateFinal(it->second->second))&&(lhs.isStateFinal(it_>second->first.isStateFinal))) {
-        new_automaton.setStateFinal(it->first);
-      }
-      if((rhs.isStateInitial(it->second->second))&&(lhs.isStateInitial(it_>second->first.isStateFinal))) {
-        new_automaton.setStateInitial(it->first);
-      }
-      // mise en relation de l'alphabet
-      if(lhs.alphabet.symbols.size()>rhs.alphabet.size()) {
-        set<char> greater_alphabet = lhs.alphabet.symbols;
-        set<char> lesser_alphabet = rhs.alphabet.symbols;
-      } else {
-        set<char> greater_alphabet = rhs.alphabet.symbols;
-        set<char> lesser_alphabet = lhs.alphabet.symbols;
-      }
-      set<char> final_alphabet;
-      for(auto it2 = greater_alphabet.begin(); it2!= greater_alphabet.end();it2++) {
-        if(lesser_alphabet.find(*it2)!=lesser_alphabet.end()) {
-          final_alphabet.insert(*it2);
+
+    std::map<std::pair<int,int>,int> t_correspondance;
+    std::queue<std::pair<int,int>> to_process;
+    int count = 0;
+
+    for(auto it = copy_lhs.SetState.states.begin(); it!= copy_lhs.SetState.states.end();it++) {
+      if(copy_lhs.isStateInitial(it->first)){
+        for(auto it2 = copy_rhs.SetState.states.begin(); it2!= copy_rhs.SetState.states.end();it2++) {
+          if(copy_rhs.isStateInitial(it2->first)){
+            std::cout << "Ca marche";
+            std::pair<int,int> t_landr = {it->first,it2->first};
+            to_process.push(t_landr);
+            t_correspondance.insert({t_landr,count});
+            new_automaton.addState(count);
+            new_automaton.setStateInitial(count);
+            if(new_automaton.isStateInitial(count)){
+              std::cout << "est initial";
+            }
+            count++;
+            std::cout << "Ca marche encore ?";
+            
+          }
         }
       }
-    
+    }
+    std::set<char> alphabet_merge;
+    for(auto it = copy_lhs.alphabet.symbols.begin(); it!= copy_lhs.alphabet.symbols.end();it++) {
+      alphabet_merge.insert(*it);
+    }
+    for(auto it = copy_rhs.alphabet.symbols.begin(); it!= copy_rhs.alphabet.symbols.end();it++) {
+      alphabet_merge.insert(*it);
     }
 
-  
+    for(char letter : alphabet_merge) {
+      new_automaton.addSymbol(letter);
+    }
+      
+    
+      while(!to_process.empty()) {
+        std::pair<int,int> now = to_process.front();
+        to_process.pop();
+        int current = t_correspondance.at(now);
+        for(char letter : new_automaton.alphabet.symbols) {
+          
+          std::set<int> left_found = copy_lhs.makeTransition({now.first},letter);
+          std::set<int> right_found = copy_rhs.makeTransition({now.second},letter);
+          for(auto it3 = left_found.begin();it3!=left_found.end();it3++) {
+            for(auto it4 = right_found.begin();it4!=right_found.end();it4++) {
+              std::pair<int,int>to_add = {*it3,*it4};
+              if (!t_correspondance.count(to_add)) {
+                    t_correspondance[to_add] = count;
+                    new_automaton.addState(count);
+                    to_process.push(to_add);
+                    count++;
+              }
+              new_automaton.addTransition(current,letter,t_correspondance.at(to_add));
+              if(copy_lhs.isStateFinal(*it3)&&copy_rhs.isStateFinal(*it4)){
+                new_automaton.setStateFinal(t_correspondance.at(to_add));
+              }
+            }
+          }
+        }
+      }
 
+      
     return new_automaton;
-
-    return lhs;
-
-
   }
 
-  bool Automaton::hasEmptyIntersectionWith(const Automaton & other) {
-    return true;
+  bool Automaton::hasEmptyIntersectionWith(const Automaton & other) const {
+    return fa::Automaton::createIntersection(*this,other).isLanguageEmpty();
   }
 
   Automaton Automaton::createDeterministic(const Automaton& automaton) {
     return automaton;
   }
 
-  bool Automaton::IsIncludedIn(const Automaton& other) {
+  bool Automaton::isIncludedIn(const Automaton& other) const{
     return true;
   }
 
@@ -602,10 +627,6 @@ namespace fa {
   }
 
   Automaton Automaton::createMinimalBrzozowski(const Automaton& automaton) {
-    return automaton;
-  }
-
-  Automaton Automaton::createMinimalHopcroft(const Automaton& automaton) {
     return automaton;
   }
 }
