@@ -1,4 +1,3 @@
-
 class Vehicule {
     
 
@@ -13,7 +12,7 @@ class Vehicule {
         }
         this.hauteur = this.image.height;
         this.longueur = this.image.width;
-        this.angle = 0; //degrée
+        this.angle = 0; //degré
         this.couleur = 0; //entier
         this.vitesse = 0; //décimal
         this.angularSpeed = 0;
@@ -70,8 +69,3 @@ class Vehicule {
     }
 
 }
-
-
-
-
-

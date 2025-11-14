@@ -1,0 +1,555 @@
+\documentclass[10pt,openright]{article}
+\usepackage[a4paper,top=25mm,bottom=25mm,left=30mm,right=20mm,bindingoffset=6mm]{geometry}
+\usepackage[T1]{fontenc} 
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[parfill]{parskip}
+\usepackage{eurosym,indentfirst,lettrine,shorttoc,soul}
+\usepackage{titlesec, blindtext, color}
+\usepackage[colorlinks=true,linkcolor=black]{hyperref}
+\usepackage{caption}
+\usepackage{tocvsec2}
+
+
+
+
+
+\titlespacing*{\section}{0pt}{*4}{*1}
+\titlespacing*{\subsection}{0pt}{*3}{*0}
+\titlespacing*{\subsubsection}{0pt}{*4}{*1}
+\setlength{\parindent}{0.5cm}
+
+
+
+
+\begin{document}
+
+\begin{figure}
+    \centering
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=0.75\linewidth]{Logo-uFC.png}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=0.75\linewidth]{Logo-CMI-Figure.png}
+    \end{minipage}
+    \includegraphics[width=0.5\linewidth]{logo-chu-besancon.jpg}
+\end{figure}
+
+
+
+\begin{center}
+
+    {\Large UFR Sciences et Techniques}\\ [7ex]
+  {\LARGE Rapport de stage d'immersion}                  \\[6.5ex]
+  {\Huge\bfseries Découverte de la Direction des Services Numériques\\[1ex] du CHU de Besançon}                  \\[6.5ex]
+  {\LARGE\bfseries Kilian GAILLARD}  \\[5ex]
+  {\large Licence CMI Informatique 1ère année}\\ [5ex]
+  {\large Du 15 juillet au 16 août 2024} \\[5ex]
+  \centering
+    \includegraphics[width=0.42\linewidth]{Info Medic.jpg}\\[5ex]
+    {\large Maître de stage : Nicolas DURAFFOURG}\\
+  {\large Tuteur universitaire : Fabien PEUREUX}
+  
+    \end{center}
+
+
+
+
+
+\begingroup
+\centering
+    \Huge{\bfseries{Remerciements}}\\
+\endgroup
+\vspace{2cm}
+Je tiens à remercier Bernard JACQUOT et Nicolas DURAFFOURG de la Cellule Réseau du département Infrastructures qui m'ont accompagné, conseillé tout au long de mon stage.\\
+
+Patrick BEAL et Dominique COUTANT de la Cellule Sécurité pour m'avoir permis d'en apprendre plus sur les moyens, logiciels et stratégies mises en place pour sécuriser un réseau informatique de grande envergure.\\
+
+Paul-Loup DESHAULET pour m'avoir fait découvrir le service Bio-Médical assurant la maintenance des équipements bio-médicaux (scanners, IRM, scopes, échographes etc\dots).\\
+
+Mais également Jérôme GUINCHARD pour m'avoir aider dans l'installation de sondes, un projet qui m'a été confié au cours de mon stage.\\
+
+Jonathan THEDENAT, de la Cellule Exploitation/Poste de Travail, pour m'avoir permis d'en apprendre plus sur son rôle et sa place dans la configuration des postes.\\
+
+Jérôme RETROUVEY de la Cellule Bases de données pour m'avoir expliqué les bases de leur gestion et utilisation de celles-ci dans l'institution.\\
+
+Je remercie tout particulièrement Fabien PEUREUX, mon tuteur universitaire, pour tous ses conseils quand à la rédaction de mon rapport, et pour son aide sur la préparation de ma soutenance.\\
+
+Je souhaite finalement remercier tout le personnel du CHU, qui se sont montrés plus qu'agréables et coopératifs, et qui ont contribués à rendre mon stage encore plus immersif et intéressant.
+
+\newpage
+
+\begingroup
+\Large
+\vspace*{6cm}
+\tableofcontents
+\endgroup
+
+
+
+\newpage
+\begingroup
+\Large
+\vspace*{6cm}
+\listoffigures
+\endgroup
+
+
+
+\newpage
+
+\begingroup
+\centering
+\LARGE
+\bfseries
+
+Glossaire
+
+\endgroup
+\vspace{1.5cm}
+\begin{itemize}
+
+
+    \item \begingroup \bfseries{IP} \endgroup : l'Internet Protocol est un ensemble de protocoles d'échanges de données entre équipements, utilisé sur Internet. Une adresse IP est le numéro d'identification provisoire ou non, d'un équipement, dans ce cheminement d'information. Cette adresse IP est donc primordial pour permettre aux équipements informatiques de communiquer avec d'autres. Une adresse IPv4, qui est le modèle d'adresse IP le plus commun et utilisé, se présente sous cette forme : 10.101.15.228.
+
+    
+\vspace{5pt}
+
+
+    \item \begingroup \bfseries{MAC}  \endgroup : une adresse MAC, venu de l'anglais Media Access Control, est une adresse unique au monde, et définitive, qui sert à identifier un équipement informatique. Elle se présente sous cette forme : 3E:FF:42:B8:CE:34.
+
+    
+\vspace{5pt}
+
+
+    \item \begingroup \bfseries{NAC} \endgroup : le Network Access Control est, comme expliqué dans la partie consacrée à la cellule sécurité, un outil d'accès et de gestion aux VLAN du CHU, ainsi qu'un moyen de sécurité. EN effet, en se reposant sur l'adresse MAC de l'appareil, ou sur un certificat pouvant être détenu par l'appareil, dans le cas où il appartient au CHU (standard 802-1 X), un équipement peu être rejeté par le réseau informatique du CHU, ou bien reconnu comme autorisé à y accéder, et ensuite placer dans les bons VLAN, afin de lui assurer un bon fonctionnement et une communication avec les équipements nécessaires et adéquats.
+
+\vspace{5pt}
+
+   \item  \begingroup \bfseries{OS}  \endgroup : Operating System, ou système d'exploitation en français, est un ensemble de programmes, qui font fonctionner un ordinateur, par exemple, comme le système d'exploitation Windows, le plus connu de tous, ou encore Linux, très utilisé dans le monde professionel informatique, de par la liberté de manipulation qu'il offre, là où Windows est davantage utilisé par le grand public, de par sa simplicité d'accès, et son utilisation assez intuitive.
+
+ \vspace{5pt}
+
+    \item \begingroup \bfseries{Po}  \endgroup : Peta-octets : unité de mesure de quantité de données informatiques. Le peta-octet représente un  million de milliards d'octets, soit mille To.
+
+\vspace{5pt}
+
+
+    \item \begingroup \bfseries{To} \endgroup : Terra-octets : unité de mesure de quantité de do\begingroup nnées informatiques. Le terra-octet représente mille milliards d'octets, l'octet étant une information inscrite sur 8 bits. Un bit étant la valeur la plus simple, dans un système de numération, car ne pouvant prendre que deux valeurs : 0 ou 1. Une information codée sur 8 bits peut prendre 2 à la puissance 8 valeurs : soit 256 valeurs différentes.
+    
+
+\vspace{5pt}
+
+    \item \begingroup \bfseries{VLAN} \endgroup : le Virtual Local Area Network, est un réseau informatique logique et indépendant. De manière simple, un VLAN est un endroit où tous les équipements se voient, et où tous peuvent potentiellement communiquer. Il est, de manière plus détaillée, un LAN virtuel : un LAN étant tout simplement un réseau indépendant, d'équipements connectés entre-eux. La nomination virtuelle signifiant donc que cette séparation est ici de l'ordre du logique et non de l'ordre physique (on interdit à des VLAN de communiquer avec d'autres sans passage par des routeurs, mais un équipement peut être relié physiquement à un autre d'un VLAN différent). Tout l'intérêt d'un tel modèle de fragmentation du réseau est celui de garantir une meilleure sécurité, car il est impossible, sans un routeur ( qui est un excellent moyen de filtrer le traffic), de communiquer avec un appareil se trouvant dans un VLAN auquel on appartient pas, mais également de réduire le domaine de collision : une zone dans laquelle des données peuvent entrer en collision et être amenée à être perdues. Segmenter le réseau informatique du CHU permet également de séparer les flux, ce qui permet une plus fluide et plus rapide circulation des données à travers le CHU.
+
+ 
+    \end{itemize}
+
+
+
+
+
+\newpage
+
+
+
+
+
+
+
+\section{Introduction}
+\vspace{0.5cm}
+Ce stage a été réalisé à l'occasion d'un stage d'immersion en entreprise, à la fin de la 1ère année d'étude de la License CMI Informatique, à l'Université de Franche-Comté, située à Besançon.
+Ce stage nous a permis de faire un premier pas dans le monde du travail, et plus précisément dans une structure utilisant l'informatique, afin de nous en apprendre davantage, de nous diversifier, et d'approfondir nos connaissances. Ce stage a été réalisé au Centre Hospitalier Universitaire de Besançon, du 15 juillet au 16 août 2024.\\
+
+Au cours de ces cinq semaines de stage, nous avons découvert le monde de l'entreprise, et plus précisément l'organisation d'un grand réseau informatique, desservant tout un Centre Hospitalier Universitaire, le plus grand du département. 
+Mais également, nous avons été en immersion dans une équipe d'une quinzaine de personnes, au sein d'un service informatique, constituant un département, celui des Infrastructures, puis lui-même divisé en plusieurs équipes, s'accordant et agissant ensemble avec les autres départements de la Direction des Services Numériques, au bon maintien de l'activité de soin, de recherche, et de soutien apportée à tous les patients du CHU de Besançon. Nous avons beacoup appris au contact de nombreux collègues de différentes équipes, afin d'en apprendre un maximum sur l'ensemble des activités, et des rôles que jouent chaque employé, chaque équipe dans chaque département du service informatique, seul garant du bon fonctionnement du réseau informatique, capital au maintien des nombreuses fonctions du CHU. Nous avons également pu prendre part à ce maintien du service informatique, et à son développement, à travers différentes tâches qui nous ont été attribuées au cours de ce stage. Tout cela nous a permis de découvrir la constitution, et le fonctionnement d'un réseau informatique de grande échelle, \oe uvrant pour la santé du peuple de la région.\\
+
+Dans notre second chapitre, le premier étant celui-ci, l'introduction générale, dans le second, nous introduisons tout d'abord le CHU de Besançon, son histoire, sa structure, ses fonctions, ses nombreux services. Ensuite, dans le troisième chapitre nous nous penchons plus précisément sur l'organisation du service informatique, son rôle dans l'institution, ainsi que les différents rôles des agents dans cette Direction. Dans un un quatrième chapitre, nous nous intéressons plus particulièrement à la cellule Réseau, celle qui m'a accueillie pour mon stage, et où j'y ai effectué de nombreux projets. Enfin nous apposons une conclusion, qui nous permet d'éclaircir et de préciser les réels objectifs et enjeux de ces missions, mais également de ce stage.
+
+\newpage
+\section{Présentation du CHU de Besançon}
+
+\vspace{0.5cm}
+
+Le CHU de Besançon est, comme son nom l'indique, un Centre Hospitalier Universitaire. Fondé fin des années 70, il est constitué d'un site principal, inauguré en 1982, l'Hôpital Jean Minjoz, mais est également constitué de son ancien site encore partiellement actif : l'Hôpital Saint-Jacques, en plein centre-ville. Le CHU de Besançon a pour mission de donner accès à des soins de qualité, et pour tous. Il compte aujourd'hui plus de 7300 membres de personnels et se trouve donc être le plus gros employeur de Besançon. Il a également une capacité d'accueil de 1300 lits.\\
+
+Le site Jean Minjoz, le plus important et amené à demeurer le seul, se compose de plusieurs bâtiments (voir figure 1 et 2) : 
+\vspace{5pt}
+\begin{itemize}
+
+    \item Le bâtiment Jean Minjoz : bâtiment "JMZ", ou "gris", tout premier bâtiment édifié fin des années 70, composé de quatre ailes de 9 étages, d'un rez-de-chausée, et de 3 sous-sols. Ce Bâtiment abrite de très nombreux services de soins au rez-de-chaussée et dans les étages . Il abrite également dans les sous-sols l'nsemble des ateliers de réparation du matériel, qu'il soit bio-médical ou non. Il s'y trouve également la pharmacie de l'hôpital ainsi que le service de restauration, et même encore d'autres services de soins au premier sous-sol. EN bref, ce bâtiment est la plaque tournante du site Jean Minjoz, et renferme toutes sortes de services.
+\vspace{5pt}
+    \item Le Pôle C\oe ur-Poumon : bâtiment "PCP", ou encore bâtiment "orange", construit en 1998, qui comme son nom l'indique contient tous les services concernant les soins et interventions sur le c\oe ur et les poumons, tels que la cardiologie, la pneumologie, ou encore l'endocrinologie.
+\vspace{5pt}
+    \item Les Directions : le bâtiment des Directions, ou bâtiment "blanc" (ou encore en violet sur le second plan du CHU), construit en 2021, abrite toutes les directions du CHU, réparties sur 4 niveaux, avec deux Directions à chaue étage. Il est le principal bâtiment administratif, passant de Direction des Ressources Humaines, à Direction du Développement Durable, également par Direction des Services Numériques, direction dans laquelle a été réalisé le stage, et encore bien d'autres. Il y a également un Centre de Formation, qui est utilisé pour former le personnel du CHU, et leur faire développer de nouvelles compétences .
+\vspace{5pt}
+    \item La Maison des Enfants et des Mères en Consultation : le bâtiment "MEMC", ou encore bâtiment "vert", édifié en 2012, contient de très nombreux servives de santé tels que la gynécologie, la cancérologie, la pédiatrie et de nombreux autres services en rapport avec la natalité (services de prénatalité et postnatalité, de néonatalogie, de soutien à la parenté etc\ldots)
+    \vspace{5pt}
+    \item Le PC-BIO : le bâtiment "bleu", construit en 2016, renferme tous les laboratoires d'analyses, de recherches par exemple en cancérologie ou en biologie médicale, et les centres de radiographies. Il s'y trouve également une unité de pharmacotechnie.
+
+\vspace{5pt}
+    \item Le centre d'imagerie, en jaune sur le second plan du CHU, construit en 2005, contient les centres où sont fais les scanners en tous genres, tels que les IRM.
+\vspace{5pt}
+    \item La Maison des Familles : bâtiment annexe du CHU, se trouvant en face du bâtiment "blanc" et construite au tout début des années 2000, est une maison où les familles des patients sont accueillies et logées par le CHU.
+\vspace{5pt}
+    \item Le CESD : le Centre d'Enseignement et de Soins Dentaires, tout nouveau bâtiment encore en pleine construction et ne figurant pas sur le plan, se trouve à la droite du PCP, et est un centre dentaire, qui est prévu d'ouvrir dès la rentrée 2024, au mois de septembre.
+\vspace{5pt}
+    \item Le centre de psychologie est un bâtiment dont les fondations n'ont pas encore été posées, mais dont la construction est déjà prévue, et promet d'être finalisée dès 2026, et qui abritera des services de soins psychologiques, d'exploration du sommeil, et de médecine légale, qui sont les derniers services qui demeurent encore à l'hôpital Saint-Jacques, dont le transfert a été amorçé dès 2012. Le site sera d'ailleurs vendu, et a déjà fait l'objet d'une promesse de vente en mai 2023.
+    \vspace{5pt}
+    \end{itemize}
+    Rien que pour le site de Jean Minjoz, on parle d'une taille de plus de 180 000 mètres carrées.
+    Ensuite le CHU est également composé du site Saint-Jacques, qui abrite encore les services de psychiatrie, d'études du sommeil et les unités de médecine légale. D'autres sites externes sont également rattachés au réseau du CHU, tels que la prison, la blanchisserie, la crèche, l'IFSI (L'Institut de Fromation en Soins Infirmiers), le site de Chemaudans où se trouvent les archives.\\
+
+\vspace{2cm}
+
+    
+        \begin{figure}[h]
+            \centering
+            \includegraphics[width=0.75\linewidth]{Plan Satellite CHU.png}
+            \caption{Plan 2D CHU Besançon 2021}
+            \label{fig:enter-label}
+        \end{figure}
+     \pagebreak       
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.65\linewidth]{Plan CHU.jpg}
+        \caption{Plan 3D CHU Besançon 2023}
+        \label{fig:enter-labell}
+    \end{figure}
+       
+        La figure 1 est un schéma d'une vue satellite du CHU de Besançon, et de ses bâtiments, ainsi que la date de leur construction.\\
+
+        Quant à la figure 2, c'est un plan 3D réalisé par le personnel informatique du CHU, et présentant les différets bâtiments du CHU construits jusqu'en 2021. (donc ne présentant pas le CESD).
+        
+\vspace{1cm}
+
+
+ 
+
+  
+
+
+Le Centre Hospitalier Universitaire de Besançon s'inscrit dans un GHT : un Groupement Hospitalier de Territoire, dont il est l'établissement support. Ce groupement a pour but de renforcer la coopération entre les hôpitaux, afin de garantir de meilleurs accès aux soins, pour une population de plus de 420 000 personnes. Ce GHT est composé de 12 établissements : 
+\vspace{5pt}
+\begin{itemize}
+    \item Centre de soins et d’hébergement de longue durée Jacques Weinman, Avanne
+    \vspace{5pt}
+    \item Centre hospitalier, Baume-les-Dames
+    \vspace{5pt}
+    \item Centre hospitalier universitaire, Besançon                    (établissement support du GHT-FC)
+    \vspace{5pt}
+    \item Centre de long séjour de Bellevaux, Besançon
+    \vspace{5pt}
+    \item Centre de soins et de réadaptation Les Tilleroyes,            Besançon
+    \vspace{5pt}
+    \item Centre hospitalier Louis Pasteur, Dole
+    \vspace{5pt}
+    \item Centre hospitalier de Novillars
+    \vspace{5pt}
+    \item Centre hospitalier Paul Nappez, Morteau
+    \vspace{5pt}
+    \item Centre hospitalier Saint-Louis, Ornans
+    \vspace{5pt}
+    \item Centre hospitalier intercommunal de Haute-comté, Pontarlier
+    \vspace{5pt}
+    \item Centre hospitalier spécialisé de Saint-Ylie, Dole
+    \vspace{5pt}
+    \item Etablissement de santé de Quingey
+        \vspace{5pt}
+\end{itemize}
+\pagebreak
+\vspace{5pt}
+Le CHU de Besançon est d'une une structure de taille importante, qui existe et agit dans un environnement différent de celui d'entreprises plus classiques. En effet, étant un établissement de santé public, son objectif n'est pas la rentabilité, il n'évolue pas vraiment dans un contexte concurrentiel. En cela, lorsque l'on souhaite évoquer la rentabilité du CHU, le terme se trouve être incorrect.\\
+Le CHU ne fait, pour ainsi dire, pas vraiment de chiffres d'affaires, puisque c'est une structure à but non lucratif, mais on peut plutôt parler de coût de fonctionnement, et de recettes de fonctionnement.
+Le CHU a coûté, en 2023, près de 680 millions d'euros, et a rapporté en recettes près de 660 millions d'euros.
+Aussi, le département informatique a reçu plus de 8 millions d'euros d'investissements en cette année 2023.
+Il faut également savoir que le GHT dans sa globalité a reçu en 2023 près d'un milliard d'euros de budget.\\
+L'évolution de ces chiffres est en hausse pour le coût de fonctionnement et ses recettes : en 2021 c'est 612 millions d'euros de coût de fonctionnement pour 618 millions d'euros de recette de fonctionnement. Et en 2022, c'est 638 millions d'euros qui ont coûté au CHU en terme de fonctionnement, et la même somme pour les recettes. On peut évidemment parler d'une tendance bien observable avec ces chiffres : plus les années passent, et plus le CHU est coûteux à faire fonctionner, mais en contrepartie, celui-ci engrange plus de revenus. On peut expliquer ce phénomène notamment par le coût de plus en plus important des technologies de pointe.
+
+
+Le secteur d'activité du CHU de Besançon est celui de la santé : il est un établissement de santé public, ayant passé une convention avec une université de santé : l'UFR Santé de Besançon, et dont les services de ces deux structures s'organisent conjointement en centres de soins, de recherche et d'enseignement.
+
+Le CHU possède des centres de soins hautement spécialisés, et en cela ses services sont nombreux et variés. Il assure une mission de soins permanents, et une prise en charge continuelle de patients ainsi qu'un suivi de ceux-ci, et bien évidemment un service d'urgence en continu.\\
+
+Le CHU \oe uvre également dans le secteur de l'enseignement, notamment en participant à la formation initiale des médecins.
+Le CHU possède plusieurs lieux de formations pour les professionels de santé :
+\vspace{5pt}
+\begin{itemize}
+    \item L'IFSI : L'Institut de Formation en Soins Infirmiers
+    \vspace{5pt}
+    \item L'IFPS : L'Institut de Formation des Professionels de Santé
+    \vspace{5pt}
+    \item Le CESU : Le Centre d'Enseignement des Soins d'Urgences
+\end{itemize}
+\vspace{5pt}
+Ce secteur de l'enseignement est d'ailleurs au centre des préoccupation du CHU, avec notamment un nouvel institut de formation encore en construction, dans lequel nous avons notamment été amenés à intervenir.
+
+
+Le CHU de Besançon a également une mission de recherche, avec laquelle elle développe de nouveaux moyens d'entreprendre la médecine, de prévenir, de soigner plus efficacement, et de permettre aux patients de disposer de traitements plus innovants. Un bâtiment entier est consacré à la recherche (bâtiment bleu, dit "PC-BIO") et de nombreuses équipes agissent en ce sens, afin d'améliorer la qualité des soins et de contribuer au progrès médical.
+
+La Direction des Services Numériques est une des nombreuses Directions du CHU, et est hiérarchisée de façon assez classique : le Directeur David CANAVERO, le Directeur Adjoint Arnaud GRAVERON, puis ensuite la Direction est organisé en  Départements qui sont le Département Infrastructures, le Centre de Services, puis l'Applications.
+Le Département Infrastructures, dans lequel nous nous trouvons en tant que stagiaire est découpé en 5 cellules ou domaines : 
+\vspace{5pt}
+\begin{itemize}
+    \item Sécurité
+    \item Bases de Données 
+    \item Exploitation/Poste de Travail 
+    \item Réseau
+    \item Maintenance Serveurs/Stockage
+\end{itemize}
+\vspace{10pt}
+
+
+Le stage a été réalisé dans le département Infrastructures, qui compte 14 personnes et plus précisément dans la cellule Réseau, qui en compte 3. Cette cellule a pour rôle de mettre en place l'infrastructure matérielle du CHU, et de la tenir en état afin que tout le réseau informatique fonctionne à tout moment, car étant dans un établissement de santé, le service informatique a pour devoir une continuité de service avec presque une tolérance zéro quant aux erreurs potentiellment effectuées. La cellule Réseau effectue également souvent des interventions de dépannage sur le matériel, d'installation et de paramétrage. Quand cela est nécessaire, la cellule est chargée d'intégrer dans le réseau les nouveaux équipements comme du matériel bio-médical comme par exemple des moniteurs de surveillance, du matériel d'imagerie, des scanners, des caméras de surveillance. Leur rôle n'est pas forcément de les installer, mais de superviser leur installation, et surtout de les intégrer au réseau. La cellule Réseau emploie assez peu de langages de programmation, le seul qu'elle utilise est celui du matériel ( comme par exemple l'AOS pour les switchs Alcatel ou le XOS pour les Extreme). La cellule emploie dans son quotidien de multiples logiciels tels qu'Orion et Centreon, leurs logiciels de supervision des équipements du réseau, ou encore XIQ pour monitorer et gérer les équipements Extreme ou encore OnlyVista pour ceux de la marque Alcatel-Lucent.\\
+
+Le prochain chapitre décrit de façon plus précise le rôle dans l'institution et les missions de la Direction des Services Numériques.
+
+\newpage
+
+\section{Présentation de la Direction des Services Numériques}
+\vspace{0.5cm}
+Le CHU de Besançon est donc une structure de taille importante, qui répond à des besoins primaires de soins, et qui participent aussi à des missions d'enseignement et de recherche. En cela, le choix de l'informatique est apparu rapidement comme la solution adaptée, pour rendre plus efficace, plus sûr, et plus rapide les moyens de communication qui assistent au soutien à la personne. C'est dans ce contexte que l'informatique trouve et prend une place capitale et motrice dans chaque intervention, consultation, demande, besoin de chaque patient, de chaque requête de quelconque employé. Toute cette strucuture doit donc bien évidemment pouvoir communiquer, stocker, rendre accès à des informations, pour assurer ses fonctions primaires qui sont celles de soigner, d'enseigner et de travailler dans la recherche.
+Un réseau a donc été mis en place, afin de desservir ces nombreux bâtiments, on parle ici de pas moins de 5 600 ordinateurs, de près de 300 logiciels métiers, conçus par le département d'Applications et qui aident à la tâche de soins, de plus de 750 serveurs, de baies de stockage pour un total de près de 2 Po de stockage. Ce rôle d'installation, d'organisation, de maintenance, d'assistance sur ce réseau est assuré par la Direction des Services Numériques.
+
+Structurée en plusieurs départements, qui sont eux-mêms divisés en plusieurs cellules, ce service répond à tous ses besoins, et implémente également de nouveaux systèmes, de nouvelles stratégies, de nouveaux équipements afin de toujours plus optimiser et faciliter la tâche au personnel soignant ou non-soignant. 
+La Direction des Services Numériques possède 3 départements : 
+\vspace{10pt}
+\begin{itemize}
+    \item Le Département Infrastructures est celui au c\oe ur duquel le stage a été réalisé, et qui compte 5 cellules : celle du réseau, de la sécurité, celle des bases de données, de la maintenance des serveurs et baies de stockages, ainsi que celle de l'exploitation et du poste de travail. Ce département est chargé de faire fonctionner tout le réseau d'équipements du CHU. Afin d'effectuer cette tâche au mieux, le Département Infrastructures met un point d'honneur à ce que les relations internes entre les différentes cellules soient excellentes, afin de pouvoir mener à bien des projets, notamment à l'aide de réunions, de concertations entre agents de cellules différentes, et d'une hiérarchie organisant et répartissat au mieux les différentes tâches et rôles des agents. Ce travail s'effectue également avec des équipes pluridisciplinaires, telles que des électriciens, l'équipe dite Bio, qui est chargée de l'entretien et de la maintenance des équipements Bio-Médicaux, le personnel du corps médical, la SPIE, ainsi que des fournisseurs extérieurs. La coordination de toutes ces équipes et du Département Infrastructures est primordiale, sans quoi l'efficacité du Département en serais considérablement réduite.
+\vspace{10pt}
+    \item Le Département Applications est chargé de mettre au points des applications, des logiciels, et de les tenir à jour, afin de permettre au personnel du CHU de pouvoir travailler. Ils sont par exemple chargés de tenir tous les logiciels métiers, qui sont près de 110, qui sont ceux utilisés par le personnel médical.
+\vspace{10pt}
+    \item Le Département Centre de services reçoit des appels, de personnes dans le besoin, et est chargé de transférer ces demandes de soutien aux professionels qualifiés afin d'assister ceux qui en ont besoin. D'une part le Centre 15 reçoit les appels d'urgence de personnes dans le besoin d'assistance médicale, et organise l'intervention des équipes spécialisées pour assurer le transport du patient jusqu'au CHU. En 2023, près de 660 000 appels ont été reçus par le Centre 15. D'une autre part, l'Assistance Centralisée est chargée de recevoir les demandes d'intervention envoyées par le personnel du CHU, sur des problèmes de fonctionnement d'équipements. L'AC (Assistance Centralisée) transmet ensuite la demande à l'équipe qualifiée, afin d'organiser l'opération d'assistance et de remise en fonctionnement de l'équipement mis en cause. L'Assistance Centralisée reçoit énormément d'appels, et doit traiter de très nombreuses demandes : en 2023, c'est plus de 40 000 appels qui ont été reçus et traités.\\
+    
+
+\end{itemize}
+
+
+  
+
+\subsection{La Cellule Sécurité}
+\vspace{20pt}
+Cette Cellule Sécurité a pour rôle de sécuriser le réseau du CHU, les informations qui y circulent, les équipements, de toute intervention extérieure inconnue et/ou non-autorisée, ou de proscrire tout comportement inadéquat au sein même de la structure.
+Cette cellule est composée de 3 personnes, qui \oe uvrent en ce sens.\\
+
+\subsubsection{Les firewalls : un premier équipement de sécurité}
+\vspace{10pt}
+Tout d'abord le CHU est protégé de l'extérieur à l'aide de différents dispositifs tels que les firewalls : qui sont des équipements qui ont pour rôle de filtrer toute communication allant de l'extérieur vers l'intérieur, et permet de bloquer, signaler, alerter tout échange d'informations reconnu comme suspect, ou potentiellement dangereux. Pour cela, les firewalls ont une fonctionnalité de traçabilité, qui est primordial pour tout réseau informatique. Ces firewalls vont sauvegarder les logs : les traces de passages, d'éxécutions de programmes, d'envoi et de réception de fichiers : en bref, toute action informatique aura la trace de son passage sauvegardé au sein des baies de stockage du CHU, ou sur un cloud appartenant à l'éditeur du firewall, afin de pouvoir prévenir les risques, analyser les actions, remonter les traces en cas de problèmes.
+Les firewalls ont également accès à des blacklists : des listes d'adresses, que ce soit électroniques, d'IP, ou autres, alimentées et enrichies à tout instant par l'éditeur du firewall, l'équipe de sécurité, au fur et à mesure de son activité, et des utilisateurs malveillants rencontrés, ou encore à l'aide de listes publiques dynamiques renseignées sur le Web.
+
+\subsubsection{Le NAC : un outil récent mais déjà révolutionnaire dans la sécurité du CHU}
+\vspace{10pt}
+La Cellule Sécurité a également mis en place un outil, nommé NAC, qui permet aux équipements branchés au réseau, d'être facilement reliés, connectés aux bons endroits et en correspondance avec les bons équipements, afin de plus rapidement leur fournir les connexion dont ils ont besoin, avec d'autres équipements au sein du CHU. Par exemple, un ordinateur du service de cardiologie aura besoin de communiquer avec une imprimante, avec les autres ordinateurs de son service, avec certains équipements d'autres services dans lesquels un patient serait passé : radiologie, etc . En bref, dans ce cas précis, il nous permet d'échanger les dossiers et résultats d'analyse d'un patient, avec le ou les services concernés. Cet outil de gestion d'accès au réseau, et de sécurité est géré par le logiciel ClearPass, et joue également un rôle quant à la sécurité du réseau, notamment car il permet de surveiller chaque port, chaque prise sur lesquels un équipement pourrait se brancher, et il réagit en fonction de celui-ci : un équipement du CHU ? reconnu et identifié ? Très bien, qui est-il ? Dans quel service, dans quel but, quel usage, avec qui a-t-il besoin d'entrer en contact, quels droits de communications, sur quels appareils lui confier ? Tous ces paramétrages sont effectués par la Cellule Sécurité, en se reposant sur l'adresse MAC de l'appareil, ou sur un certificat pouvant être détenu par l'appareil, dans le cas où il appartient au CHU (standard 802-1 X), et à l'inverse, interdisent l'accès au réseau à toute machine n'étant pas identifiée comme appartenant au CHU. Dans le cas contraire, l'équipement est identifié précisément, puis rediriger là où il faut, afin de pouvoir communiquer avec tout ce qui lui est nécessaire.
+
+
+\subsubsection{L'innovation et la mise en place de nouveaux moyens de protéger : le Bastion}
+\vspace{10pt}
+La Cellule Sécurité ne se contente pas d'analyser, ou de répondre aux menaces qu'elle peut rencontré, elle prend de l'avance, innove, met en place des nouveaux systèmes de sécurité, des nouvelles stratégies, afin de prévenenir les risques. En cela, elle est en pleine mise en en place d'un nouveau système de sécurité : le Bastion. Celui-ci aura pour tâche de garantir l'accès en toute sécurité des fournisseurs d'équipements du CHU, au réseau, lors des interventions, mais en limitant l'accès au strict nécessaire, afin d'éviter toute menace, ou création de faiblesse. Le Bastion aura également la possibilité de sécuriser dornéavant le système d'accès aux données, en interne, en proposant une double authentification lors des manipulations des administrateurs du réseau, afin d'éviter les manipulations de leurs parts, non-légitimes, ou afin d'éviter la totale compromission du réseau en cas d'obtention d'un identifiant admin de la part d'un externe, ou d'une personne mal-intentionée au sein ou en dehors du CHU.
+
+
+\subsubsection{La sécurité par l'étude comportementaliste : Cortex}
+\vspace{10pt}
+Enfin la dernière solution de sécurité des plus importantes, que nous avons été amenés à découvrir est Cortex. C'est un logiciel de cybersécurité, qui est capable d'un grand nombre de choses, et qui constite le principal moyen de défense contre les cyberattaques du CHU. Il est capable de croiser des données ammassées, comme les alertes remontées à l'aide des firewalls, couplés avec les blacklists mentionnées plus tôt, et autres comportements suspects connu du grand public, ou souvent rencontré par le personnel de l'équipe de sécurité du CHU, afin d'identifier plus efficacement et de bloquer les attaques, ainsi que d'obtenir une meilleure prévention des risques. Cet outil permet également, à l'aide d'une intelligence artificielle dévelopée par l'éditeur de Cortex, d'analyser les comportements tendancieux des cyberattaques, à l'aide de répétitions de schémas d'attaques, de manipulations similaires, ou autres actions qui peuvent sembler bénines, mais constituent en réalité un moyen de comprendre, d'interpréter, et d'anticiper les cyberattaques. Cortex permet aussi de surveiller l'ensemble du flux réseau, donc de tous les chemeniments de données et d'échanges, mais également de surveiller le flux d'éxécution, c'est à dire qui éxécute quoi, où, avec quelle permission.\\
+
+Toutes ces informations sont agrégées vers un cloud de l'éditeur de l'outil : PaloAlto. Ces données une fois sur ce cloud sont analysées par Orange Cyberdéfense, pour ensuite transférer les comportements et actions les plus dangereuses au Cloud Cortex, où le personnel qualifier de chez PaloAlto prendra des mesures afin d'aider le personnel du CHU sur les plus gros cas de cyberattaques. Cette opération de management préventif des données et alertes est assurée par Orange car les coûts de service de l'équipe de PaloAlto sont très importants. Orange fait donc un premier tri des alertes et actions les plus suspectes et dangereuses et les transmet, afin de filtrer le nombre d'alertes envoyées, ce qui diminue drastiquement le coup de l'outil.
+
+\vspace{15pt}
+\subsection{La Cellule Bases de Données}
+\vspace{20pt}
+
+L'hôpital, au cours de son activité, engrange des données. Celles-ci se doivent, une fois créées, de circuler, d'être sauvegardées, stockées, puis retrouvées, distribuées à ceux qui les demandent et y ont accès. Pour cela, elles doivent être organisées, dans une structure de données, afin de faciliter leur accès à ceux qui en ont besoin. C'est ici qu'interviennent les bases de données, et la cellule qui en a la charge.\\
+
+Ils sont chargés de créer ces bases de données, qui organiseront les données sous forme de fichiers, ordonnés, hiérarchisés, afin de faciliter le temps de réponse de l'ordinateur, qui sera chargé de renvoyer cette donnée demandée.\\
+Ces bases de données sont crées et modifiées, à l'aide du logiciel Oracle, choisi pour sa fiabilité, sa gestion pratique des espaces de stockage, ses options disponibles, sa gestion de sauvegarde, sa sécurité, et les nombreux OS avec lesquels il est compatible (la cellule emploie l'OS Linux). Malgré tout, toute solution pratique et fiable a un coût, et ici, on parle d'une licence Oracle, d'une valeur excédant 12 000 euros, sans options, et par processeur, le CHU en possédant 12. Ajoutez à cela un coût de maintenance de près de 20 \% de celui de la licence et en effet, l'investissement est important. Mais cela est bien nécessaire, afin de correctement répondre aux besoins du personnel du CHU, et de leurs patients.\\
+
+Cette cellule est également chargé de suivre l'évolution des demandes faites de consulatation d'informations, afin de comprendre les besoin, et d'optimiser la rapidité de réponse des machines, en analysant les requêtes les plus communes, ou celles qui manquent de précision, qui sont mal effectuées et mènent à des exécutions trop longues.
+\vspace{15pt}
+\subsection{La Cellule Maintenance Serveurs/Stockage}
+\vspace{20pt}
+
+Le CHU de Besançon, comme toute structure utilisant l'informatique, a besoin de serveurs, pour faire fonctionner des applications nécessaires à l'activité de l'entreprise. Le CHU a fait le choix, plutôt que de passer par des serveurs physiques, un serveur pour une application, de passer par une virtualisation des serveurs.\\ 
+
+La virtualisation de serveurs consiste à définir de manière virtuelle, plusieurs serveurs sur une même machine appelée hyperviseur, qui peuvent chacun fonctionner de façon plus ou moins indépendante. On peut rassembler plusieurs hyperviseurs dans un châssis (voir figure 3). On peut installer sur ces serveurs ou  VM (Virtual Machine : machine virtuelle) un OS sur lequel fonctionner, un ou des processeurs qui le feront fonctionner, un espace de stockage auquel il aura accès, et les VLAN sur lesquels il pourra communiquer. Chacun de ces hyperviseurs tourne sur l'OS VMWare, qui est celui chosi par le CHU pour la virtualisation de ces machines. \\
+
+Ce mécanisme de virtualiser ses serveurs a pour effet d'économiser de la place, de l'énergie, et des fonds. Le rôle de cette cellule est donc de mettre en place ce fonctionnement de virtualisation des serveurs, d'installer physiquement ces armoires, ces hyperviseurs, puis de définir les VM, et leur fonctionnement à chacun. Ensuite, leur travail consiste également à communiquer avec le département Application, et de leur définir selon leurs besoins, de nouveaux VM, pour faire tourner leurs applications nouvellement conçues, qui ont chacune besoin d'un serveur avec des caractéristiques particulières pour les faire fonctionner.
+Cette figure est un exemple de ce à quoi ressemble un chassis, la stucture physique renfermant tous ces serveurs virtuels.
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.55\linewidth]{chassisbis.jpg}
+    \caption{Châssis, constitué de tous ses hyperviseurs}
+    \label{fig:enter-label11}
+\end{figure}
+
+Toutes ces applications sont stockées sur des baies de disques, et fonctionnent à l'aide de ces serveurs définis virtuellement. Ainsi, lorsqu'un utilisateur installe, et utilise une application, son ordinateur envoie une requête au serveur correspondant, qui demande des données aux baies de stockage concernées  qui sont alors renvoyées à l'utilisateur (voir figure 4). La figure suivante illustre ce cheminement d'une requête envoyée par un utilisateur.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\linewidth]{Baie de disque.png}
+    \caption{Schéma de circulation d'une donnée}
+    \label{fig:enter-label5}
+\end{figure}
+
+Chaque salle serveur possède des chassis et des baies de disques, et chaque serveur peut communiquer avec les baies de disques des deux salles serveurs (voir figure 5). Afin de prévenir les risques de détérioration de matériel, le transit des données est assuré par un modèle maillé afin de garantir le bon transfert des données, même en cas de sinistres.
+\vspace{15pt}
+\subsection{La Cellule Exploitation/Poste de Travail}
+\vspace{20pt}
+Le rôle de la cellule Exploitation/Poste de Travail est de s'accorder avec le département Applications, qui s'occupe de développer des logiciels utiles au personnel du CHU, et de développer des mises à jour. La cellule fait installer les logiciels et mises à jour envoyés par l'équipe de développement aux utilisateurs ou machines visées. Soit l'équipe Applications a bien fait son package, et l'installation et l'exécution se passe comme on le veut, sans déranger les tâches et activités du pesonnel, sans créer d'erreur, soit, dans le plus courant des cas, le package ne fonctionne pas, n'est pas correct, ne rend pas compte du résultat escompté, et alors la cellule est chargée de recréer un package, un lot d'exécutions, de manipulations, qui installeront et exécuteront le programme comme souhaité. Cela est fait à partir d'un outil nommé SSCM, qui permet d'envoyer des commandes, des ordres d'éxécutions et de manipulations à des PC ou à des groupes de PC. Cet outil est très pratique et permissif, mais reste peu utilisé car assez coûteux. L'équipe emploie aussi l'outil GPO, qui permet de paramétrer une machine ou un utilisateur, et d'en modifier les paramètres. Par exemple les machines du CHU ont un GPO qui met en veille leurs ordinateurs, qui leur interdit le branchement d'appareils en USB, etc\ldots
+
+\vspace{15pt}
+\subsection{La Cellule Réseau}
+\vspace{20pt}
+La cellule Réseau a pour rôle majeur d'intervenir sur la partie physique de la chaîne du transfert de données. Sa mission première est d'installer, de mettre en relation divers équipements réseau à travers le CHU, afin de garantir une bonne circulation d'informations à travers l'informatique. La cellule doit également beaucoup intervenir sur celui-ci, même après on installation, pour des travaux de maintenance, de réparation, ou encore de rénovation d'équipements. Cette cellule a également pour mission de suivre les tendances et avancées en matières de nouvelles technologies, et donc de mettre en place une évolution du parc informatique du CHU. Enfin, l'optimisation de ce réseau fait également partie intégrante des problématiques des membres de la cellule Réseau.\\
+Le prochain chapitre décrit davantage les missions qui nous ont été confiées au sein de la cellule Réseau.\\
+
+\noindent SSCM : \url{https://fr.wikipedia.org/wiki/System_Center_Configuration_Manager}\\
+GPO : \url{https://fr.wikipedia.org/wiki/Stratégie_de_groupe}
+
+
+ \newpage
+
+\section{Immersion au sein de la Cellule Réseau}
+\vspace{0.5cm}
+
+C'est dans cette cellule que le stage a été réalisé en très grande partie, et nous avons donc pris part aux journées types des membres de cette cellule, notamment à travers diverses opérations de maintenance sur ce réseau, mais également à travers des tâches plus exceptionnelles de mise en place de nouveaux équipements sur le réseau informatique du CHU.
+\vspace{15pt}
+\subsection{Remplacement de switchs par un nouveau modèle}
+\vspace{20pt}
+Le réseau LAN du CHU de Besançon est desservi par des équipements de la marque Alcatel-Lucent, qui est l'ancien fournisseur d'équipements du CHU. Le service informatique est en pleine opération de remplacement de ces équipements par ceux de la marque Extreme Networks. Constructeur d'équipements informatiques, il est celui retenu pour équiper le nouveau réseau LAN du CHU de Besançon.\\
+
+C'est dans ce contexte que nous avons pris part au remplacement de switchs Alactel-Lucent par des Extreme, sur le site Jean Minjoz. Ceux-ci sont plus puissants, moins bruyants et offrent deux fois plus de ports. Ils offrent également la possibilité d'avoir accès au NAC, nouvelle fonctionnalité de sécurité, et de gestion d'accès aux VLAN du CHU, ce qui était impossible avant, sur les switchs de la marque Alcatel-Lucent, qui nécessitaient à chaque nouveau branchement d'un équipement, de manuellement saisir l'adresse IP de l'équipement, afin de le placer dans le bon VLAN, ou bien de réserver une adresse IP pour ce port, ou cette adresse MAC particulière, pour ensuite lier le bon VLAN. Les nouveaux switchs, et leur capacité à pouvoir faire fonctionner un NAC dessus présente donc un grand gain de temps quant à l'installation et la mise en fonctionnement des équipements, mais également à un réel tournant quant à l'adaptabilité du réseau : tout équipement qui serait déconnecté d'un port, puis rebranché ailleurs, dans un service, un lieu totalement différent, se retrouverait quand même imméditement reconnu et les VLAN liés au port, changés presque instantanément, ce qui n'était pas une seule seconde envisageable avec les équipements Alcatel-Lucent.\\
+
+Le remplacement de switchs est une opération de grande envergure, avec 1080 switchs de 24 ports à changer.Celui-ci n'est pas fini, et en réalité, ne fait que débuter, on estime que 15 \% des switchs du réseau ont été remplaçés, ce qui représente 228 switchs Extreme, et encore 852 switchs Alcatel qu'il reste à remplacer.
+\vspace{15pt}
+\subsection{Installation de sondes de températures}
+\vspace{20pt}
+Le service informatique du CHU de Besançon se doit de garantir une mise en service de son réseau informatique 24h/24, chaque jour. Le service informatique a mis en place, et nous y avons contribué, à l'installation de sondes de températures dans la plupart des locaux, abritant des équipement réseaux, tels que des switchs, des serveurs, des baies de disques. Nous avons installé une quinzaine de sondes à travers le bâtiment gris (JMZ) et vert (MEMC) du CHU. Ces suivis de températures sont consultables depuis une page wikipédia privée, accessible uniquement par les membres du service informatique.\\
+
+Ces sondes sont reliées au réseau informatique du CHU, par un VLAN qui leur est spécifique et commun à toutes, et sont capables d'envoyer des alertes par mails, en cas de trop forte, ou trop faible température. L'installation d'une de ces sondes est plutôt simple, et prend peu de temps, de l'ordre de 10 minutes, juste le temps de sortir la sonde, de la fixer à la baie d'un local, de la brancher à un switch, de brancher son cable de sonde, puis de noter le port, le numéro du switch, et le numéro de la pile sur laquelle elle figure. Une fois installée, elle doit être installée sur le bon VLAN, ce qui a été fait par mon maître de stage. La sonde est ensuite reliée au réseau, fonctionelle, elle renvoie bien la température de son environnement. Il est important de noter que cette installation a été simplifiée par un membre de la cellule Maintenance Serveur/Stockage : Jérôme GUINCHARD, qui a pris le temps de paramétrer les sondes de températures et de leur réserver une adresse IP afin de simplfier toute l'opération d'installation.
+
+Le tableau qui a été rempli pour référencer les informations de ces sondes (voir figure 5), est formé ainsi :  le nom des sondes : une lettre, le nom du bâtiment (ici J pour JMZ), ensuite une deuxième lettre pour l'aile correspondant (A :Nord, B : Ouest, C : Sud, D : Est), puis un numéro : celui du niveau où se trouve la sonde. Puis, la seconde colonne référence les adresses IP de la sonde, la troisième colonne, le nom du port où la sonde est branchée. Enfin, la quatrième colonne référence l'adresse URL à laquelle les informations sur la sonde sont consultables, puis la dernière colonne, l'état de fonctionnement de celle-ci.
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\linewidth]{Sondefake.png}
+    \caption{Page wiki privée factice d'une sonde recensant les sondes en JMZ}
+    \label{fig:enter-label6}
+\end{figure}
+Cette sixième figure est une représentation modifiée de ce à quoi ressemble les tableaux recensant les informations des sondes du CHU. Ce tableau est identique d'un point de vue de la forme, à celui utilisé par le CHU, mais ses informations sont ici factices, car celles du CHU sont sensibles : on ne voudrait pas que des adresses IP ou autres informations sensibles soient communiquées à des individus malveillants.\\
+L'adresse URL amène à une page web (voir figure 6), spécifique pour chaque sonde, et permet de visualiser les informations d'une sonde.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\linewidth]{Sonde.png}
+    \caption{Page web d'une sonde et de ses informations}
+    \label{fig:enter-label7}
+\end{figure}
+
+\vspace{15pt}
+\subsection{Mise en place de switchs au sein de l'IFPS}
+\vspace{20pt}
+Le CHU de Besançon, étant un centre d'enseignements comme le stipule la convention passée avec l'Université, investit activement dans ce domaine, et c'est dans cet optique qu'a été construit l'IFPS (voir figure 7), le nouveau centre de formation pour le personnel médical. Un centre de plus de 7 500 Mètres carrées, avec la volonté de former plus de 1000 personnes chaque année.
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\linewidth]{IFPS.png}
+    \caption{Perspective 3D de l'IFPS}
+    \label{fig:enter-label10}
+\end{figure}
+
+C'est ici qu'a été effectué notre installation de switchs, dans 7 locaux différents, disposant chacun d'une baie, avec entre 2 et 4 switchs chacun, d'une arrivée de fibre, et de ports reliés à des câbles, distribuant le flux à travers l'IFPS, et ces 5 niveaux. En tout, c'est 21 switchs qui ont été installés. Installer un switch peut facilement prendre 5 minutes, le temps de le fixer à la baie, et de relier et mettre en marche ses alimentations (qui sont 2, toujours pour éviter la panne totale d'un équipement). Ce travail a été réalisé sur une seule journée, avec nos deux collègues de la cellule Réseau, et d'un technicien de l'entreprise SPIE, mandatée par le CHU pour intervenir sur les installations techniques de tout ce qui touche au réseau et à l'électrique.
+\vspace{15pt}
+\subsection{Intervention sur une panne de switchs : Hôpital St-Jacques}
+\vspace{20pt}
+L'Hôpital St-Jacques est le site qui précédait l'Hôpital J.Minjoz, et qui aujourd'hui, est en plein transfert de ses services vers ce dernier. Certains de ses bâtiments sont donc démolis petit à petit, pour à terme complètement délocaliser tous ses services de santé vers Minjoz. Sur place, il ne restera que les bâtiments en meilleur état, afin de les réhabiliter pour des logements, et autres, tel que l'installation d'une grande bibliothèque municipale, à la place de l'ancienne maternité de St-Jacques, aujourd'hui détruite depuis près d'un an. A ce jour demeure encore les services de médecine légale, d'exploration du sommeil, et de psychiatrie. Ceux-ci ont donc besoin d'être relié au réseau du CHU, par une fibre, et ce flux doit être distribué dans les différents services. Ce site, étant vieux de plus de 30 ans, les équipements malgré tout robustes, et à la pointe de la technologie à l'époque ne sont aujourd'hui plus que des équipements obsolètes. Certains switchs étaient particulièrement en mauvais état, et suspectés par la cellule réseau de pouvoir disfonctionner, voir arrêter complètement de fonctionner dans les prochaines semaines à venir. Il était donc nécessaire d'intervenir, afin de les remplacer, par des nouveaux switchs, qui eux-mêmes étaient anciennement utilisés sur le site de Minjoz, mais remplacés par les nouveaux de la marque Extreme. En effet, il n'était pas pertinent d'installer des nouveaux switchs Extreme, flambants-neufs, sur un site voué à être démantelé dans les prochains mois. Ces équipements, alors encore en parfait état de fonctionnement, sont bien assez suffisants pour remplir leur tâche. C'est un total de 3 switchs qui ont été remplaçé, en l'espace d'une après-midi.
+
+\vspace{15pt}
+\subsection{Interventions diverses de maintenances}
+\vspace{20pt}
+La plupart du temps, quand une opération d'installation à titre exceptionel n'était pas à effectuer, notre tâche était de suivre nos collègues de la cellule Réseau dans leurs interventions de maintenances du réseau informatique à travers le CHU. Au sein du CHU de Besançon, des appels sont passés par le personnel du  CHU, auprès de l'Assistance Centralisée, lorsqu'un problème survient avec les équipements informatiques du CHU. L'AC prend l'appel, et se charge de faire un "ticket", un formulaire décrivant une demande ou un incident particulier (voir figure 9), qui est ensuite transféré au service concerné, afin d'être traîté dans les plus brefs délais. Ce service de demandes d'assistance et d'interventions par tickets est assuré par le logiciel GLPI, auquel tout le personnel du service informatique a accès (voir figure 8). Dans notre cas, nous prenions donc en charge les tickets, dispatchés par l'AC, à ce que l'on appelle le niveau 2. Le premier niveau étant celui de l'AC (si elle est capable par le biais de simples instructions au téléphone, de résoudre le problème). Le niveau 2 désigne donc la résolution d'une tâche attribuée à une cellule par l'AC. Et le niveau 3, finalement, décrit la résolution de problème par le fournisseur de l'équipement mis en cause, si la cellule ne peut résoudre le problème à son échelle. 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\linewidth]{interfaceticket.png}
+    \caption{Accueil de GLPI}
+    \label{fig:enter-label8}
+\end{figure}
+
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\linewidth]{exempleticket.png}
+    \caption{Exemple d'un ticket}
+    \label{fig:enter-label9}
+\end{figure}
+
+Au cours de ce stage, nous avons été amené à pratiquer des interventions de maintenance sur le réseau du CHU, tels que des redémarrages d'alimentation de switchs en plein disfonctionnement, des changements de ports sur lesquels certains équipements étaient connectés, et qui ne recevait plus de flux, par exemple lorsque le câble qui liait ce port à son switch, a été coupé, ou s'est détérioré. Des opérations de modification d'adresse IP, et de VLAN à attribuer étaient aussi une des tâches que nous avons réalisées, notamment dans un contexte de déplacement d'un service dans une autre partie du bâtiment. En effet, puisque les équipemnts de celui-ci étaient connectés à un switch Alcatel-Lucent, le NAC n'étant pas disponible, les accès aux VLAN et l'adresse IP étaient attribués au port en question, et non à l'équipement, puisque ce n'est pas possible sans le NAC. Les équipements, après avoir été déplacés, ne fonctionnaient donc plus, car se sont retrouvés sur un port qui ne correspond pas à la fonction pour laquelle ils sont employés. Par exemple, un port prévu et paramétré pour l'utilisation d'une imprimante ne peut faire fonctionner un ordinateur. Il  a donc fallu intervenir sur place, prendre connaissance des ports mis en cause et les re-paramétrer pour à nouveau garantir le bon fonctionnement des équipements.
+
+
+\section{Conclusion}
+\vspace{0.5cm}
+Au cours de ce stage, j'ai été amené à suivre et découvrir des notions de base sur le fonctionnement du réseau informatique du CHU de Besançon, à travers des échanges avec mes collègues du service informatique. J'ai pû en apprendre sur l'infrastructure informatique, par quels moyens et équipements les informations circulent, comment mettre en relation ces équipements et comment les sécuriser. J'ai également découvert leurs bases de données, moyens indispensables d'organiser et de faciliter la recherche de données, celles-ci renferment plusieurs milliards d'enregistrements. Mais malgré la grande quantité d'informations que j'ai pu assimiler, l'importance de celles-ci pour comprendre le réseau, et leur pertinence pour ma poursuite d'études, cette partie du stage était la moins intéractive. En cela, les interventions quotidiennes, de dépannage, de réparation, et de remplacement d'équipements m'ont permis de me familiariser avec la manipulation d'équipements. Ces interventions m'ont permis de participer à des projets internes à l'institution.\\
+
+
+J'ai par exemple contribué à la surveillance du bon état des locaux qui abritent les équipements chargés de distribuer le flux à travers le CHU (tels que des switchs) en installant des sondes dans un total de quinze locaux, répartis pour la plupart dans le bâtiment JMZ, et pour quelques-uns dans le bâtiment MEMC.
+Les sondes ont pour rôles de surveiller la température, et pour certaines d'entre elles le taux d'humidité, qui sont des facteurs qui peuvent mener à une dégradation et à des disfonctionnements d'équipements si ceux-ci ne sont pas dans les valeurs référencées comme étant sans danger pour le matériel. Les sondes que j'ai installées, puis référencées sur le wiki privé du CHU, sont bien toutes accessibles de celui-ci, et leurs informations, relatives à la température, et pour certaines d'entre-elles au taux d'humidité de leur environnement, sont bien consultables.\\
+
+J'ai également pu participer à l'installation de nouveaux switchs dans le tout nouveau bâtiment de formtion des professionels de santé construit par le CHU et l'Université. J'ai pu y installer un total de 21 switchs, en compagnie de mon maître de stage Nicolas DURAFFOURG, et de son collègue Bernard JACQUOT. Ces switchs ont ensuite été branchés et reliés par des liens fibres par  Bernard JACQUOT, et la tâche a donc été réalisée avec succès.\\
+
+Au cours de ce stage, j'ai donc découvert le monde de l'entreprise, notamment lié à celui de l'informatique. Il m'a permis de diversifier mes conaissances de celles acquises au cours de cette première année d'études : j'ai pu côtoyer un environnement évoluant avec une grande infrastructure.
+De plus, au-delà des conaissances de qualité, et d'un réel intérêt pour moi, j'ai appris à réellement travailler avec une équipe, de rendre compte de mes travaux réalisés afin de m'accorder avec les leurs.
+Le cadre de travail, châleureux, bienveillant, et impliqué dans mon apprentissage, m'ont permis de passer un stage des plus agréables, bien plus que je ne l'espérais.
+
+Au final, ce stage m'a conforté dans l'idée de poursuivre mes études dans l'informatique, d'en découvrir plus, m'a fait levé des à-prioris quant à certains points, notamment sur celui de l'activité professionelle, et des tâches réalisées par une équipe de cybersécurité, étant la branche dans laquelle j'aspire à travailler. Je pensais que travailler dans la cybersécurité consistait à sagement attendre d'être exposé à une attaque, puis d'y répondre par des commandes en tous genres, afin de contrecarrer les tentatives d'intrusions.
+
+\newpage
+
+
+
+
+\begingroup
+\centering
+\LARGE{\bfseries{Résumé}}\\
+\endgroup
+
+\vspace{10pt}
+La fin de ma première année de licence d'informatique a été marqué par un stage de 5 semaines dans une entreprise, voué à la découverte du monde professionel dans le domaine Informatique. Ce stage a été réalisé dans le Centre Hospitalier Universitaire de Besançon, et plus précisément dans leur service informatique. J'ai au cours de ce stage diversifié mes compétences en intervenant sur le réseau informatique (directement sur les équipements), et j'ai également pu approfondir mes connaissances déjà acquises au cours de l'année, notamment en découvrant les bases de données utilisées par cette structure, et leur utilisation, l'activité de leur équipe en cybersécurité m'a également été présentée. Ce rapport présente les projets et conaissances que j'ai acquises au cours de ce stage, qui est mon premier dans le monde du travail, et qui m'a été particulièrement bénéfique.\\
+
+\vspace{15pt}
+
+\begingroup
+\centering
+\large{\bfseries{Mots-clés : }}
+\endgroup
+informatique, hôpital, réseau, équipements, maintenance, stage
+
+
+\vspace{30pt}
+
+\begingroup
+\centering
+\LARGE{\bfseries{Abstract}}\\
+\endgroup
+
+\vspace{10pt}
+The end of my first year of bachelor’s degree in computer science was marked by a 5-week internship in a company, dedicated to discovering the professional world in the field of computer science. This internship was carried out in the University Hospital of Besançon, and more precisely in their computer department. During this course I have diversified my skills in intervening on the computer network (directly on equipment), and I was also able to deepen my knowledge already acquired during the year, In particular, by discovering the databases used by this structure and their use, I was also introduced to the activity of their cybersecurity team. This report presents the projects and knowledge I gained during my first internship in the world of work, which was particularly beneficial to me.\\
+
+\vspace{15pt}
+
+\begingroup
+\centering
+\large{\bfseries{Keywords : }}
+\endgroup
+computer, hospital, network, equipments, upkeeping, internship
+
+\end{document}
